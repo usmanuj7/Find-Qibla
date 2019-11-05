@@ -23,12 +23,14 @@ import { Ionicons } from "@expo/vector-icons";
 import UtilConstants from "../../utils/constants";
 
 const { height, width } = Dimensions.get("window");
-
-export interface QiblahMapScreenProps extends NavigationScreenProp<{}> {}
+export interface QiblahMapScreenProps {
+  navigation: NavigationScreenProp<any, any>;
+}
 export interface QiblahMapScreenStates {
   location: any;
   errorMessage: string;
   region: any;
+  city: any;
 }
 
 // Converts from degrees to radians.
@@ -55,7 +57,8 @@ export class QiblahMapScreen extends Component<
         longitude: -122.4324,
         latitudeDelta: 0.003,
         longitudeDelta: 0.003
-      }
+      },
+      city: ""
     };
   }
 
@@ -79,7 +82,7 @@ export class QiblahMapScreen extends Component<
     }
 
     let location = await Location.getCurrentPositionAsync({});
-    console.log(location);
+    this.getAddress(location.coords.latitude, location.coords.longitude);
     this.setState({
       location,
       region: {
@@ -89,6 +92,35 @@ export class QiblahMapScreen extends Component<
         longitudeDelta: 0.003
       }
     });
+  };
+
+  _goBack = async () => {
+    const { navigation } = this.props;
+    navigation.goBack();
+  };
+
+  /**
+   * Gets a getAddress using reverse geocode.
+   */
+  getAddress = async (lat: number, lng: number) => {
+    try {
+      // start making calls
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lng}&key=AIzaSyDM3PbVBH_MmcTa0wDKN3nTk8M4NL6RfXg`
+      );
+
+      if (response.status !== 200) {
+        return;
+      }
+
+      // Examine the text in the response
+      const data = await response.json();
+      console.log(data);
+      const results = data.results;
+      this.setState({
+        city: results[0].formatted_address.split(", ")[2]
+      });
+    } catch (e) {}
   };
 
   getQibla = sourceLocation => {
@@ -114,7 +146,7 @@ export class QiblahMapScreen extends Component<
   };
 
   render() {
-    const { location, region, errorMessage } = this.state;
+    const { location, region, errorMessage, city } = this.state;
     return (
       <Grid
         style={{
@@ -145,7 +177,7 @@ export class QiblahMapScreen extends Component<
                 justifyContent: "center",
                 alignItems: "center"
               }}
-              onPress={this._getLocationAsync}
+              onPress={this._goBack}
             >
               <Ionicons
                 style={{ textAlign: "center", paddingTop: 3 }}
@@ -157,12 +189,12 @@ export class QiblahMapScreen extends Component<
           </Col>
           <Col
             style={{
-              alignItems: "flex-start",
+              alignItems: "flex-start"
               // backgroundColor: "yellow"
             }}
             size={0.53}
           >
-             <Text
+            <Text
               style={{
                 color: UtilConstants.colorPrimary,
                 fontSize: height / 26
@@ -179,15 +211,31 @@ export class QiblahMapScreen extends Component<
           }}
           size={0.4}
         >
-          <Col style={{ alignItems: "center" }}>
-            <Text style={{ color: "#fff" }}>
+          <Col style={{ alignItems: "flex-end" }} size={0.4}>
+            <Ionicons
+              style={{ textAlign: "center", padding: 4 }}
+              name="md-navigate"
+              size={22}
+              color="white"
+            />
+          </Col>
+          <Col style={{ alignItems: "flex-start" }} size={0.6}>
+            {/* <Text style={{ color: "#fff" }}>
               {location
                 ? `${location.coords.latitude} ${location.coords.longitude}`
                 : "Location Not Yet Fetched"}
+            </Text> */}
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: height / 40,
+              }}
+            >
+              {location ? `${city}` : "Location Not Yet Fetched"}
             </Text>
           </Col>
         </Row>
-        <Row style={{ alignItems: "center", padding:16 }} size={6}>
+        <Row style={{ alignItems: "center", padding: 16 }} size={6}>
           <Col style={{ alignItems: "center" }}>
             <MapView
               region={region}
@@ -219,7 +267,7 @@ export class QiblahMapScreen extends Component<
                   borderRadius: 24,
                   justifyContent: "center",
                   alignItems: "center",
-                  backgroundColor: "#f8f8ff",
+                  backgroundColor: UtilConstants.colorPrimary,
                   position: "absolute",
                   bottom: 8,
                   right: 8
@@ -230,7 +278,7 @@ export class QiblahMapScreen extends Component<
                   style={{ textAlign: "center", paddingTop: 3 }}
                   name="md-locate"
                   size={22}
-                  color="grey"
+                  color="white"
                 />
               </TouchableOpacity>
             </MapView>

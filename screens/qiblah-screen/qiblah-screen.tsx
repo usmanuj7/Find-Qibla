@@ -235,7 +235,8 @@ export class QiblahScreen extends Component<
         }}
       >
         <Row style={{ alignItems: "center" }} size={0.6}>
-          <Col style={{ alignItems: "center" }}>
+          <Col style={{ alignItems: "center" }} size={0.2}></Col>
+          <Col style={{ alignItems: "center" }} size={0.6}>
             <Text
               style={{
                 color: UtilConstants.colorPrimary,
@@ -244,6 +245,9 @@ export class QiblahScreen extends Component<
             >
               Qibla Direction
             </Text>
+          </Col>
+          <Col style={{ alignItems: "center" }} size={0.2}>
+            <Ionicons name="md-help" color={UtilConstants.colorPrimary} size={width / 16} />
           </Col>
         </Row>
         <Row style={{ alignItems: "center" }} size={0.2}>
@@ -425,9 +429,9 @@ export class QiblahScreen extends Component<
                 justifyContent: "center",
                 alignItems: "center"
               }}
-              onPress={this._goToMap}
+              onPress={this._getLocationAsync}
             >
-              <Ionicons name="md-help" color="white" size={width / 16} />
+              <Ionicons name="md-locate" color="white" size={width / 16} />
             </TouchableOpacity>
           </Col>
         </Row>
