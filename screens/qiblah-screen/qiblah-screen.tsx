@@ -5,7 +5,8 @@ import {
   Text,
   Dimensions,
   TouchableOpacity,
-  Platform
+  Platform,
+  StatusBar
 } from "react-native";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import { Magnetometer } from "expo-sensors";
@@ -17,6 +18,9 @@ import { Ionicons } from "@expo/vector-icons";
 const { height, width } = Dimensions.get("window");
 
 import UtilConstants from "../../utils/constants";
+
+import Toast from 'react-native-simple-toast';
+
 
 export interface QiblahScreenProps {
   navigation: NavigationScreenProp<any, any>;
@@ -60,6 +64,7 @@ export class QiblahScreen extends Component<
   }
 
   componentDidMount() {
+    if (Platform.OS === "android") StatusBar.setBackgroundColor(UtilConstants.colorBackground)
     this._toggle();
     if (Platform.OS === "android" && !Constants.isDevice) {
       this.setState({
@@ -86,6 +91,13 @@ export class QiblahScreen extends Component<
     let location = await Location.getCurrentPositionAsync({});
     console.log(location);
     this.setState({ location });
+
+    Toast.show(
+      'Location Updated',
+      Toast.SHORT,
+      // Toast.BOTTOM,
+    );
+
   };
 
   _goToMap = async () => {
@@ -247,7 +259,11 @@ export class QiblahScreen extends Component<
             </Text>
           </Col>
           <Col style={{ alignItems: "center" }} size={0.2}>
-            <Ionicons name="md-help" color={UtilConstants.colorPrimary} size={width / 16} />
+            {/* <Ionicons
+              name="md-help"
+              color={UtilConstants.colorPrimary}
+              size={width / 16}
+            /> */}
           </Col>
         </Row>
         <Row style={{ alignItems: "center" }} size={0.2}>
@@ -365,15 +381,15 @@ export class QiblahScreen extends Component<
             </Text>
             <Text
               style={{
-                color: "#fff",
-                fontSize: height / 45,
+                color: UtilConstants.colorPrimary,
+                fontSize: height / 55,
+                fontStyle: "italic",
                 width: width,
                 textAlign: "center",
-                padding: 8
+                padding: 10
               }}
             >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. rhoncus
-              nisi,{" "}
+              Do you want to view Qibla’s direction on map?{" "}
             </Text>
             {/* <Text style={{ color: "#fff" }}>{this.state.magnetometer}</Text> */}
             {/* <Text style={{ color: "#fff" }}>
@@ -431,7 +447,15 @@ export class QiblahScreen extends Component<
               }}
               onPress={this._getLocationAsync}
             >
-              <Ionicons name="md-locate" color="white" size={width / 16} />
+              <Ionicons
+                name="md-locate"
+                color="white"
+                size={width / 16}
+                style={{
+                  textAlign: "center",
+                  paddingTop: Platform.OS == "ios" ? 3 : 0
+                }}
+              />
             </TouchableOpacity>
           </Col>
         </Row>

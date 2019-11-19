@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
   Text,
+  View,
   Dimensions,
   TouchableOpacity,
   Platform,
@@ -200,7 +201,7 @@ export class QiblahMapScreen extends Component<
                 fontSize: height / 26
               }}
             >
-              Maps
+              Map
             </Text>
           </Col>
         </Row>
@@ -228,7 +229,7 @@ export class QiblahMapScreen extends Component<
             <Text
               style={{
                 color: "#fff",
-                fontSize: height / 40,
+                fontSize: height / 40
               }}
             >
               {location ? `${city}` : "Location Not Yet Fetched"}
@@ -236,7 +237,7 @@ export class QiblahMapScreen extends Component<
           </Col>
         </Row>
         <Row style={{ alignItems: "center", padding: 16 }} size={6}>
-          <Col style={{ alignItems: "center" }}>
+          <Col style={{ alignItems: "center" , position:"relative"}}>
             <MapView
               region={region}
               style={styles.mapStyle}
@@ -260,7 +261,9 @@ export class QiblahMapScreen extends Component<
                 strokeColor="blue" // fallback for when `strokeColors` is not supported by the map-provider
                 strokeWidth={6}
               />
-              <TouchableOpacity
+            </MapView>
+
+            <TouchableOpacity
                 style={{
                   width: 48,
                   height: 48,
@@ -270,18 +273,19 @@ export class QiblahMapScreen extends Component<
                   backgroundColor: UtilConstants.colorPrimary,
                   position: "absolute",
                   bottom: 8,
-                  right: 8
+                  right: 15,
+                  zIndex: 4,
                 }}
                 onPress={this._getLocationAsync}
               >
-                <Ionicons
-                  style={{ textAlign: "center", paddingTop: 3 }}
-                  name="md-locate"
-                  size={22}
-                  color="white"
-                />
+                
+               <Ionicons
+                    style={{ textAlign: "center",  paddingTop: Platform.OS == "ios"? 3 : 0 }}
+                    name="md-locate"
+                    size={22}
+                    color="white"
+                  />
               </TouchableOpacity>
-            </MapView>
           </Col>
         </Row>
         <Row
@@ -330,6 +334,7 @@ const styles = StyleSheet.create({
   mapStyle: {
     width: "95%",
     height: "95%",
-    borderRadius: 16
+    borderRadius: 16,
+    
   }
 });

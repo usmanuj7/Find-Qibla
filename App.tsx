@@ -1,16 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StatusBar } from "react-native";
 import { AppNavigator } from "./navigation";
 
 export default function App() {
-  return <AppNavigator />;
+  return [<StatusBar key="statusbar" barStyle="light-content" backgroundColor="black" />, <AppNavigator key="root" />];
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});

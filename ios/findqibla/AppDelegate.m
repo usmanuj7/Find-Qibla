@@ -14,6 +14,7 @@
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 #import <GoogleMaps/GoogleMaps.h>
+#import "RNSplashScreen.h" 
 
 @implementation AppDelegate
 
@@ -35,7 +36,8 @@
   [self.window makeKeyAndVisible];
 
   [super application:application didFinishLaunchingWithOptions:launchOptions];
-
+  
+ [RNSplashScreen show];
   return YES;
 }
 

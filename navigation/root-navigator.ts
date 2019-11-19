@@ -1,17 +1,17 @@
-import { createStackNavigator } from 'react-navigation-stack';
-import { QiblahScreen } from "../screens/qiblah-screen"
-import { QiblahMapScreen } from "../screens/qiblah-map-screen"
-import { createAppContainer } from "react-navigation";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import { SplashScreen } from "../screens/splash-screen";
+import { PrimaryNavigator } from "./primary-navigator";
 
-export const RootNavigator = createStackNavigator(
+export const RootNavigator = createSwitchNavigator(
   {
-    home: { screen: QiblahScreen },
-    map: { screen: QiblahMapScreen },
+    splash: { screen: SplashScreen },
+    primary: { screen: PrimaryNavigator },
   },
   {
-    headerMode: "none",
     navigationOptions: { gesturesEnabled: false },
-  },
-)
+    backBehavior: "none",
+    initialRouteName: "splash"
+  }
+);
 
 export const AppNavigator = createAppContainer(RootNavigator);
