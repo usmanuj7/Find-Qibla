@@ -92,10 +92,10 @@ export class QiblahScreen extends Component<
     console.log(location);
     this.setState({ location });
 
-    Toast.show(
+    Toast.showWithGravity(
       'Location Updated',
       Toast.SHORT,
-      // Toast.BOTTOM,
+      Toast.BOTTOM,
     );
 
   };
