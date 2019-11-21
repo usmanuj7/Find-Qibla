@@ -246,7 +246,7 @@ export class QiblahScreen extends Component<
           backgroundColor: UtilConstants.colorBackground
         }}
       >
-        <Row style={{ alignItems: "center" }} size={0.6}>
+        <Row style={{ alignItems: "center", marginTop: 15, }} size={0.6}>
           <Col style={{ alignItems: "center" }} size={0.2}></Col>
           <Col style={{ alignItems: "center" }} size={0.6}>
             <Text
@@ -257,6 +257,20 @@ export class QiblahScreen extends Component<
             >
               Qibla Direction
             </Text>
+
+            <Text
+              style={{
+                color: UtilConstants.colorPrimary,
+                fontSize: height / 55,
+                fontStyle: "italic",
+                width: width,
+                textAlign: "center",
+                padding: 10
+              }}
+            >
+              Keep your device in horizontal position for accurate direction{" "}
+            </Text>
+           
           </Col>
           <Col style={{ alignItems: "center" }} size={0.2}>
             {/* <Ionicons
@@ -266,8 +280,10 @@ export class QiblahScreen extends Component<
             /> */}
           </Col>
         </Row>
+      
         <Row style={{ alignItems: "center" }} size={0.2}>
           <Col style={{ alignItems: "center" }}>
+
             <Text
               style={{
                 color: "#fff",

@@ -4,7 +4,7 @@
     android:opacity="opaque">
     <item>
         <bitmap
-            android:src="@drawable/icon"
+            android:src="@drawable/splash"
             android:gravity="fill"
         />
     </item>

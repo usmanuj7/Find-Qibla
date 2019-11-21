@@ -26,6 +26,6 @@ export class SplashScreen extends React.Component<SplashScreenProps, {}> {
   }
 
   render() {
-    return <Image source={require("./splash_image.png")} resizeMode={Platform.OS === "ios" ? "cover" : "stretch"} style={{ width:"100%", height:"100%"}} />;
+    return <Image source={require("./Splash.png")} resizeMode={Platform.OS === "ios" ? "cover" : "stretch"} style={{ width:"100%", height:"100%"}} />;
   }
 }

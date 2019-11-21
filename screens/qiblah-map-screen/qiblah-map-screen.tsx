@@ -32,6 +32,7 @@ export interface QiblahMapScreenStates {
   errorMessage: string;
   region: any;
   city: any;
+  mapType: any;
 }
 
 // Converts from degrees to radians.
@@ -53,6 +54,7 @@ export class QiblahMapScreen extends Component<
     this.state = {
       errorMessage: "",
       location: null,
+      mapType: "standard",
       region: {
         latitude: 37.78825,
         longitude: -122.4324,
@@ -72,6 +74,12 @@ export class QiblahMapScreen extends Component<
     } else {
       this._getLocationAsync();
     }
+  }
+
+  _changeType=()=> {
+    this.setState({
+      mapType:"satellite",   
+    });
   }
 
   _getLocationAsync = async () => {
@@ -203,6 +211,15 @@ export class QiblahMapScreen extends Component<
             >
               Map
             </Text>
+
+            {/* <TouchableOpacity onPress={this._changeType}>
+              <Text style={{
+                color: UtilConstants.colorPrimary,
+                fontSize: height / 26
+              }}>
+                checking
+              </Text>
+            </TouchableOpacity> */}
           </Col>
         </Row>
         <Row
@@ -232,7 +249,7 @@ export class QiblahMapScreen extends Component<
                 fontSize: height / 40
               }}
             >
-              {location ? `${city}` : "Location Not Yet Fetched"}
+              {location ? `${city}` : "Unable to fetch location"}
             </Text>
           </Col>
         </Row>
@@ -242,6 +259,7 @@ export class QiblahMapScreen extends Component<
               region={region}
               style={styles.mapStyle}
               provider={PROVIDER_GOOGLE}
+              mapType={"satellite"}  //this.state.mapType
             >
               <Marker
                 coordinate={{
