@@ -14,7 +14,7 @@
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 #import <GoogleMaps/GoogleMaps.h>
-#import "RNSplashScreen.h" 
+#import "RNSplashScreen.h"
 
 @implementation AppDelegate
 

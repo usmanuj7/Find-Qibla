@@ -44,7 +44,7 @@ const radians = function(degrees) {
 const degrees = function(radians) {
   return (radians * 180) / Math.PI;
 };
-
+var count = 0;
 export class QiblahMapScreen extends Component<
   QiblahMapScreenProps,
   QiblahMapScreenStates
@@ -76,10 +76,22 @@ export class QiblahMapScreen extends Component<
     }
   }
 
-  _changeType=()=> {
-    this.setState({
-      mapType:"satellite",   
-    });
+  _changeMapType=()=> {
+    count = count + 1;
+    if(count % 2 === 0){
+      this.setState({
+        mapType:"standard",   
+      });
+
+    }else{
+      this.setState({
+        mapType:"satellite",   
+      });
+
+
+      
+    }
+
   }
 
   _getLocationAsync = async () => {
@@ -255,11 +267,38 @@ export class QiblahMapScreen extends Component<
         </Row>
         <Row style={{ alignItems: "center", padding: 16 }} size={6}>
           <Col style={{ alignItems: "center" , position:"relative"}}>
+          <TouchableOpacity
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 24,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor:"white", //UtilConstants.colorPrimary,
+                position: "absolute",
+                top: 8,
+                right: 15,
+                zIndex: 4,
+                
+              }}
+              onPress={this._changeMapType}
+            >
+              <Ionicons
+                style={{
+                  textAlign: "center",
+                  paddingTop: Platform.OS == "ios" ? 3 : 0
+                }}
+                name="md-map"
+                size={22}
+                color= { UtilConstants.colorPrimary} //"white"
+              />
+            </TouchableOpacity>
+
             <MapView
               region={region}
               style={styles.mapStyle}
               provider={PROVIDER_GOOGLE}
-              mapType={"satellite"}  //this.state.mapType
+              mapType={this.state.mapType}
             >
               <Marker
                 coordinate={{
