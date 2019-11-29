@@ -6,7 +6,8 @@ import {
   Dimensions,
   TouchableOpacity,
   Platform,
-  StatusBar
+  StatusBar,
+  BackHandler,
 } from "react-native";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import { Magnetometer } from "expo-sensors";
@@ -20,6 +21,8 @@ const { height, width } = Dimensions.get("window");
 import UtilConstants from "../../utils/constants";
 
 import Toast from 'react-native-simple-toast';
+import { Subscription } from "@unimodules/core";
+import RNExitApp from 'react-native-exit-app';
 
 
 export interface QiblahScreenProps {
@@ -48,7 +51,7 @@ export class QiblahScreen extends Component<
   QiblahScreenProps,
   QiblahScreenStates
 > {
-  _subscription;
+  _subscription: Subscription;
   rawMagnetometer = [];
 
   constructor(props) {
@@ -63,9 +66,15 @@ export class QiblahScreen extends Component<
     };
   }
 
+  handleBackButtonClick() {
+    RNExitApp.exitApp();
+    return true;
+  }
+
   componentDidMount() {
-    if (Platform.OS === "android") StatusBar.setBackgroundColor(UtilConstants.colorBackground)
-    this._toggle();
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
+    if (Platform.OS === "android") 
+    StatusBar.setBackgroundColor(UtilConstants.colorBackground)
     if (Platform.OS === "android" && !Constants.isDevice) {
       this.setState({
         errorMessage:
@@ -73,10 +82,12 @@ export class QiblahScreen extends Component<
       });
     } else {
       this._getLocationAsync();
+      this._subscribe();
     }
   }
 
   componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick)
     this._unsubscribe();
   }
 
@@ -114,11 +125,10 @@ export class QiblahScreen extends Component<
   };
 
   _toggle = () => {
-    if (this._subscription) {
-      this._unsubscribe();
-    } else {
-      this._subscribe();
-    }
+    // if (this._subscription) {
+    //   this._unsubscribe();
+    // } else 
+    // this._subscribe();
   };
 
   _rotate = () => {
@@ -138,7 +148,10 @@ export class QiblahScreen extends Component<
     return rotation;
   };
 
+
+  
   _subscribe = async () => {
+    console.warn("subscribed")
     const { magnetometer } = this.state;
     Magnetometer.setUpdateInterval(100);
     this._subscription = Magnetometer.addListener(data => {
@@ -152,12 +165,20 @@ export class QiblahScreen extends Component<
         z: data.z
       });
     });
-  };
+  }
 
   _unsubscribe = () => {
-    this._subscription && this._subscription.remove();
-    this._subscription = null;
-  };
+    try {
+      if(this._subscription) {
+        console.warn("Unsubscribed")
+        this._subscription.remove()
+        this._subscription = null
+      } 
+    } catch (e) {
+      console.warn('Hell',e.message)
+    }
+    
+  }
 
   _addMagnetometerReading(data) {
     if (this.rawMagnetometer.length > 2) this.rawMagnetometer.shift();

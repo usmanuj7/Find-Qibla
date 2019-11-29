@@ -21,6 +21,7 @@ import expo.modules.constants.ConstantsPackage;
 import expo.modules.permissions.PermissionsPackage;
 import expo.modules.filesystem.FileSystemPackage;
 import com.airbnb.android.react.maps.MapsPackage;
+import com.github.wumke.RNExitApp.RNExitAppPackage;
 
 
 import java.util.Arrays;
@@ -46,7 +47,8 @@ public class MainApplication extends Application implements ReactApplication {
           new RNGestureHandlerPackage(),
           new RNScreensPackage(),
           new ModuleRegistryAdapter(mModuleRegistryProvider),
-          new MapsPackage()
+          new MapsPackage(),
+          new RNExitAppPackage()
       );
     }
 
